@@ -7,18 +7,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/people")
+@RequestMapping("api/")
 public class PeopleRestController {
 
    private final PeopleService peopleService;
 
-    @RequestMapping("/show")
+    @GetMapping("people")
     public Page<PeopleDto> showPeople(Pageable pageable) {
         return peopleService.findAll(pageable);
     }

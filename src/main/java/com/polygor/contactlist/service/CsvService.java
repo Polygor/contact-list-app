@@ -1,12 +1,10 @@
-package com.polygor.contactlist.service.util;
+package com.polygor.contactlist.service;
 
 import com.polygor.contactlist.entity.PeopleEntity;
 import com.polygor.contactlist.exception.CsvParsingException;
 import com.polygor.contactlist.repository.PeopleRepository;
-import com.polygor.contactlist.service.PeopleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,22 +20,24 @@ import org.apache.commons.csv.CSVRecord;
 
 @Service
 @RequiredArgsConstructor
-public class CsvUtil {
+public class CsvService {
 
     private final PeopleRepository peopleRepository;
 
-    public void csvToPeople(InputStream is) {
+    public void convertPeopleCsvFileToDatabaseEntity(InputStream is) {
         if (is != null) {
             peopleRepository.deleteAll();
-            try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-                 CSVParser csvParser = new CSVParser(fileReader,
-                         CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
-                List<PeopleEntity> peopleList = new ArrayList<>();
-                Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+            try (BufferedReader fileReader = new BufferedReader
+                    (new InputStreamReader(is, StandardCharsets.UTF_8));
 
-                for (CSVRecord csvRecord : csvRecords) {
-                    convertCsvRecordToEntity(peopleList, csvRecord);
-                }
+                 CSVParser csvParser = new CSVParser
+                         (fileReader, CSVFormat.DEFAULT
+                         .withFirstRecordAsHeader()
+                         .withIgnoreHeaderCase()
+                         .withTrim()))
+            {
+                Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+                List<PeopleEntity> peopleList = createPeopleListFromCsvRecords(csvRecords);
                 peopleRepository.saveAll(peopleList);
 
             } catch (IOException e) {
@@ -46,10 +46,19 @@ public class CsvUtil {
         }
     }
 
-    private void convertCsvRecordToEntity(List<PeopleEntity> peopleList, CSVRecord csvRecord) {
+    private List<PeopleEntity> createPeopleListFromCsvRecords(Iterable<CSVRecord> csvRecords) {
+        List<PeopleEntity> peopleList = new ArrayList<>();
+        for (CSVRecord csvRecord : csvRecords) {
+            PeopleEntity peopleEntity = convertCsvRecordToEntity(csvRecord);
+            peopleList.add(peopleEntity);
+        }
+        return peopleList;
+    }
+
+    private PeopleEntity convertCsvRecordToEntity(CSVRecord csvRecord) {
         PeopleEntity people = new PeopleEntity();
         people.setName(csvRecord.get("name"));
         people.setImageUrl(csvRecord.get("url"));
-        peopleList.add(people);
+        return people;
     }
 }
