@@ -26,14 +26,15 @@ public class PeopleCsvService {
 
     public void convertPeopleCsvFileToDatabaseEntity(InputStream is) {
         if (is != null) {
+
             try (BufferedReader fileReader = new BufferedReader
                     (new InputStreamReader(is, StandardCharsets.UTF_8));
-
                  CSVParser csvParser = new CSVParser
                          (fileReader, CSVFormat.DEFAULT
                          .withFirstRecordAsHeader()
                          .withIgnoreHeaderCase()
                          .withTrim()))
+
             {
                 Iterable<CSVRecord> csvRecords = csvParser.getRecords();
                 List<PeopleEntity> peopleList = createPeopleListFromCsvRecords(csvRecords);
@@ -47,11 +48,15 @@ public class PeopleCsvService {
 
     private List<PeopleEntity> createPeopleListFromCsvRecords(Iterable<CSVRecord> csvRecords) {
         List<PeopleEntity> peopleList = new ArrayList<>();
+        convertCsvRecordsToPeopleEntityList(csvRecords, peopleList);
+        return peopleList;
+    }
+
+    private void convertCsvRecordsToPeopleEntityList(Iterable<CSVRecord> csvRecords, List<PeopleEntity> peopleList) {
         for (CSVRecord csvRecord : csvRecords) {
             PeopleEntity peopleEntity = convertCsvRecordToEntity(csvRecord);
             peopleList.add(peopleEntity);
         }
-        return peopleList;
     }
 
     private PeopleEntity convertCsvRecordToEntity(CSVRecord csvRecord) {

@@ -11,22 +11,16 @@ import org.springframework.stereotype.Service;
 public class PeopleMapper {
 
     public Page<PeopleDto> mapToDto(Page<PeopleEntity> peopleEntities) {
-            return peopleEntities.map(this::mapToDto);
-        }
-
-    private PeopleDto mapToDto (PeopleEntity peopleEntity){
-        PeopleDto peopleDto = new PeopleDto();
-        peopleDto.setId(peopleEntity.getId());
-        peopleDto.setName(peopleEntity.getName());
-        peopleDto.setImageUrl(peopleEntity.getImageUrl());
-        return peopleDto;
+        return peopleEntities.map(this::mapToDto);
     }
 
-    private PeopleDto mapToEntity (PeopleDto peopleDto){
-        PeopleEntity peopleEntity = new PeopleEntity();
-        peopleEntity.setId(peopleDto.getId());
-        peopleEntity.setName(peopleDto.getName());
-        peopleEntity.setImageUrl(peopleDto.getImageUrl());
+    private PeopleDto mapToDto(PeopleEntity peopleEntity) {
+        PeopleDto peopleDto = new PeopleDto();
+        if (peopleEntity != null) {
+            peopleDto.setId(peopleEntity.getId());
+            peopleDto.setName(peopleEntity.getName());
+            peopleDto.setImageUrl(peopleEntity.getImageUrl());
+        }
         return peopleDto;
     }
 }
