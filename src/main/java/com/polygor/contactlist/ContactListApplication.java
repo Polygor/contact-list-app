@@ -1,6 +1,7 @@
 package com.polygor.contactlist;
 
-import com.polygor.contactlist.service.CsvService;
+import com.polygor.contactlist.repository.PeopleRepository;
+import com.polygor.contactlist.service.PeopleCsvService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,8 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class ContactListApplication {
 
-    private final CsvService csvService;
+    private final PeopleCsvService peopleCsvService;
+    private final PeopleRepository peopleRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(ContactListApplication.class, args);
@@ -25,6 +27,9 @@ public class ContactListApplication {
     @PostConstruct
     private void init() {
         InputStream inputStream = ContactListApplication.class.getResourceAsStream("/data/people.csv");
-        csvService.convertPeopleCsvFileToDatabaseEntity(inputStream);
+        //clear old data on startup
+        peopleRepository.deleteAll();
+        //populate new data on startup
+        peopleCsvService.convertPeopleCsvFileToDatabaseEntity(inputStream);
     }
 }

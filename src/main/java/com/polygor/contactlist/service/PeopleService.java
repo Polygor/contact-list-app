@@ -21,4 +21,9 @@ public class PeopleService {
         Page<PeopleEntity> peopleEntities = peopleRepository.findAll(pageable);
         return this.peopleMapper.mapToDto(peopleEntities);
     }
+
+    public Page<PeopleDto> findBy(String name, Pageable pageable) {
+        Page<PeopleEntity> peopleEntities = peopleRepository.findByName(name, pageable);
+        return this.peopleMapper.mapToDto(peopleEntities);
+    }
 }

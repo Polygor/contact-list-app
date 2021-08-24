@@ -20,13 +20,12 @@ import org.apache.commons.csv.CSVRecord;
 
 @Service
 @RequiredArgsConstructor
-public class CsvService {
+public class PeopleCsvService {
 
     private final PeopleRepository peopleRepository;
 
     public void convertPeopleCsvFileToDatabaseEntity(InputStream is) {
         if (is != null) {
-            peopleRepository.deleteAll();
             try (BufferedReader fileReader = new BufferedReader
                     (new InputStreamReader(is, StandardCharsets.UTF_8));
 
