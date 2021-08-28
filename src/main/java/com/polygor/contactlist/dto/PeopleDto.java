@@ -1,8 +1,9 @@
 package com.polygor.contactlist.dto;
 
 import java.util.Objects;
+import java.io.Serializable;
 
-public class PeopleDto {
+public class PeopleDto implements Serializable {
 
     private Long id;
     private String name;
