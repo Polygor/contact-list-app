@@ -16,14 +16,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +28,9 @@ import static org.mockito.Mockito.when;
 
 public class PeopleServiceTest {
 
-    public static final long EXPECTED_PEOPLE_ID = 1L;
-    public static final String EXPECTED_PEOPLE_NAME = "name";
-    public static final String EXPECTED_PEOPLE_URL = "url";
+    private static final long EXPECTED_PEOPLE_ID = 1L;
+    private static final String EXPECTED_PEOPLE_NAME = "name";
+    private static final String EXPECTED_PEOPLE_URL = "url";
     @Mock
     private PeopleRepository peopleRepository;
     @Mock
@@ -42,7 +39,7 @@ public class PeopleServiceTest {
     private PeopleService peopleService;
 
     @Test
-    public void shouldGetAllPeople(){
+    public void shouldGetAllPeople() {
         //GIVEN
         PeopleEntity peopleEntity = new PeopleEntity();
         peopleEntity.setId(EXPECTED_PEOPLE_ID);
@@ -58,7 +55,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    public void shouldSearchPeopleByName(){
+    public void shouldSearchPeopleByName() {
         //GIVEN
         PeopleEntity peopleEntity = new PeopleEntity();
         peopleEntity.setId(EXPECTED_PEOPLE_ID);

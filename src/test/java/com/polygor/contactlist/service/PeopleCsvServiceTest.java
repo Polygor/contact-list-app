@@ -34,9 +34,6 @@ public class PeopleCsvServiceTest {
 
     private static final int EXPECTED_ENTITY_LIST_SIZE = 817;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
     @Mock
     private PeopleRepository peopleRepository;
 
