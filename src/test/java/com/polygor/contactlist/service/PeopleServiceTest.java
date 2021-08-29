@@ -19,6 +19,8 @@ import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 public class PeopleServiceTest {
 
-    private static final long EXPECTED_PEOPLE_ID = 1L;
+    private static final Long EXPECTED_PEOPLE_ID = 1L;
     private static final String EXPECTED_PEOPLE_NAME = "name";
     private static final String EXPECTED_PEOPLE_URL = "url";
     @Mock
@@ -51,6 +53,9 @@ public class PeopleServiceTest {
         Page<PeopleDto> peopleDtos = peopleService.findAll(pageable);
         //THEN
         assertThat(peopleDtos.getContent().size(), is(1));
+        assertEquals(EXPECTED_PEOPLE_ID,  peopleDtos.getContent().get(0).getId());
+        assertEquals(EXPECTED_PEOPLE_NAME, peopleDtos.getContent().get(0).getName());
+        assertEquals(EXPECTED_PEOPLE_URL, peopleDtos.getContent().get(0).getImageUrl());
     }
 
     @Test
